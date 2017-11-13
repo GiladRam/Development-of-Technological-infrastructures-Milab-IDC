@@ -39,7 +39,7 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
                                                               int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_view, parent, false);
+                .inflate(R.layout.character_view, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
