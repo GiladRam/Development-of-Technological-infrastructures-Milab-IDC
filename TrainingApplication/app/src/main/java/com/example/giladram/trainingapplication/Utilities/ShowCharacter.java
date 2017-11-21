@@ -1,4 +1,4 @@
-package com.example.giladram.trainingapplication;
+package com.example.giladram.trainingapplication.Utilities;
 
 /**
  * Created by giladram on 11/11/17.

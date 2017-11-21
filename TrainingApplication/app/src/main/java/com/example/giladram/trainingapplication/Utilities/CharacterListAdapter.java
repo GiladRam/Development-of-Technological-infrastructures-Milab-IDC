@@ -1,4 +1,4 @@
-package com.example.giladram.trainingapplication;
+package com.example.giladram.trainingapplication.Utilities;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.giladram.trainingapplication.R;
 
 /**
  * Created by giladram on 11/11/17.

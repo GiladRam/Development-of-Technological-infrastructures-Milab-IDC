@@ -1,15 +1,19 @@
-package com.example.giladram.trainingapplication;
+package com.example.giladram.trainingapplication.Fragments;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.giladram.trainingapplication.R;
+import com.example.giladram.trainingapplication.Utilities.CharacterListAdapter;
+import com.example.giladram.trainingapplication.Utilities.ShowCharacter;
 
-public class LannistersListFragment extends Fragment {
+
+public class StarksListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -17,17 +21,17 @@ public class LannistersListFragment extends Fragment {
 
     private  ShowCharacter[] myDataset;
 
-    public LannistersListFragment(){
+    public StarksListFragment(){
         myDataset = new ShowCharacter[3];
-        myDataset[0] = new ShowCharacter("Peter Dinklage", R.mipmap.lannister_peter_dinklage);
-        myDataset[1] = new ShowCharacter("Cersei Lannister", R.mipmap.cersei_lannister);
-        myDataset[2] = new ShowCharacter("Jaime Lannister", R.mipmap.jaime_lannister);
+        myDataset[0] = new ShowCharacter("Eddard Stark", R.mipmap.ned_stark);
+        myDataset[1] = new ShowCharacter("Sansa Stark", R.mipmap.sansa_stark);
+        myDataset[2] = new ShowCharacter("Robb Stark", R.mipmap.robb_stark);
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View mainView =  inflater.inflate(R.layout.lannister_list, container, false);
-        mRecyclerView = (RecyclerView) mainView.findViewById(R.id.lannister_list);
+        View mainView =  inflater.inflate(R.layout.stark_list, container, false);
+        mRecyclerView = (RecyclerView) mainView.findViewById(R.id.stark_list);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView

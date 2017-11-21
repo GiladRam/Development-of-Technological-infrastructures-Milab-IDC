@@ -1,5 +1,6 @@
-package com.example.giladram.trainingapplication;
+package com.example.giladram.trainingapplication.Fragments;
 
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -8,8 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.giladram.trainingapplication.R;
+import com.example.giladram.trainingapplication.Utilities.NotificationsSettingsDialog;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -26,6 +31,7 @@ public class MainActivityFragment extends Fragment {
         Button clickToToast = mainView.findViewById(R.id.ChangeTextButton);
         Button clickToUserList = mainView.findViewById(R.id.users_page_button);
         Button clickToPicturesList = mainView.findViewById(R.id.pic_page_button);
+        ImageButton notificationPrefernces = mainView.findViewById(R.id.notification_preference);
 
         final FragmentManager manager = getActivity().getSupportFragmentManager();
         final FragmentTransaction transaction = manager.beginTransaction();
@@ -55,9 +61,15 @@ public class MainActivityFragment extends Fragment {
                 transaction.replace(R.id.fragment_container, starksListPage);
                 transaction.addToBackStack(null);
                 transaction.commit();
-
-
             }
+        });
+
+        notificationPrefernces.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragmentDialog = new NotificationsSettingsDialog();
+                newFragmentDialog.show(getFragmentManager(), "Interval Settings");
+}
         });
         return mainView;
     }
