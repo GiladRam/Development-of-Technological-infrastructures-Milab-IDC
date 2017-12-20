@@ -1,0 +1,14 @@
+{
+  "name": "nodejs-serverapp",
+  "version": "1.0.0",
+  "description": "NodeJS time RestAPI ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gilad Ram",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
