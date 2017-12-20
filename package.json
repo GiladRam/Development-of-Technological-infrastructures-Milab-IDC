@@ -9,6 +9,6 @@
   "author": "Gilad Ram",
   "license": "ISC",
   "dependencies": {
-    "express": "9.3.0"
+    "express": "^4.16.2"
   }
 }
