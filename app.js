@@ -12,19 +12,14 @@ app.get('/gettime', (req,res) => {
 	res.send("The time current Time on the server: " + currentTime);
 })
 
-app.get('/getFile', (req,res) => {
-	let reqFileName = req.query.filename || "No filename"
-	let fullFileName = reqFileName + '.txt' 
-	fs.readFile( fullFileName ,(err, content) => {
-	if (err) {
- 		console.error(err);
- 		res.send("Could not find file name: " + reqFileName)
- 		return;
-		}
- 	console.log("Got content with length - " + content.length);
- 	res.send(content.toString())
-	});
+app.get('/getFile/:filename', (req,res) => {
+	let reqFileName = req.params.filename || "No filename"
+	let filePath = __dirname + "/" + reqFileName
+	if (fs.existsSync(filePath)) {
+    	fs.createReadStream(reqFileName).pipe(res);
+	}else{
+		res.send("Could not find file " + filePath);		
+	}	
 })
-
 
 app.listen(port, () => console.log('Example app listening on port' + port + '!'))
