@@ -5,11 +5,10 @@ const port = process.env.PORT || 8080;
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
-
 app.get('/gettime', (req,res) => {
 	let date = new Date();	
-	let currentTime = date.toTimeString();
-	res.send("The time current Time on the server: " + currentTime);
+	let jsonCurrentTime = { currentTime: date.toJSON()};
+	res.send(jsonCurrentTime);
 })
 
 app.get('/getFile/:filename', (req,res) => {
