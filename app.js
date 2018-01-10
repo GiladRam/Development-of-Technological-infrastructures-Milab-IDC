@@ -1,8 +1,8 @@
-const alphavantage = require('alphavantage')({key: 'LW906MWVENK2Z6XN'});
+const alphavantage = require('alphavantage')({key: 'PXWQ8QSU96NBM8NJ'});
 const PORT = process.env.PORT || 3000;
-var app = require('express')();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+let app = require('express')();
+let server = require('http').Server(app);
+let io = require('socket.io')(server);
 
 server.listen(PORT, () => console.log(`listening in port ${PORT}`));
 
@@ -11,24 +11,24 @@ app.get('/', function (req, res) {
 });
 
 io.on('connect', function (socket) {
-  let stock = null;
+  let stockName = null;
   socket.on('sendStockName', (data) => {
-    stock = data;
+    stockName = data;
     console.log(`New Stock : ${stock}`);
   });
 
   let postStockPrice = setInterval(() => {
-    console.log(`Sending new stock price`);
+    console.log(`Getting new stock price...`);
       if(!socket){
         console.log(`Error: No socket`);
       return;
       }
-      if(!stock){
+      if(!stockName){
         socket.emit('notFound');
-        console.log(`Error: No stock name`);
+        console.log(`Error: Could not find stock name`);
         return;
       }
-      alphavantage.data.intraday('FB').then((data) => {
+      alphavantage.crypto.intraday('BTC').then((data) => {
       if(!data){
         socket.emit('notFound');
         console.log(`Error: Stock not found`);
