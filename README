@@ -1,5 +1,11 @@
-https://milab-infrastructures.herokuapp.com
-file name is simpleFile
-I added the get time app in TimeAPI folder
-Thanks 
-Gilad Ram
+	Exersice 10
+-------------------------------------------
+1. I did this exersice with Tomer Mimon 
+2. In my repo you can find the server side.
+3. The Node JS server monitor stock qoutes from Alpha Vantage.
+4. Tomer implemented an android client for it which allows to enter stock name
+   and  send the client information (stock price).
+5. The server updates the clinet every every 15 seconds using Firebase.
+
+	Thanks a lot, 
+		Gilad Ram

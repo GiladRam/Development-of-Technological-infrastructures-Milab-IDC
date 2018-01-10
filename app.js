@@ -11,9 +11,9 @@ app.get('/', function (req, res) {
 });
 
 io.on('connect', function (socket) {
-  let stockName = null;
-  socket.on('sendStockName', (data) => {
-    stockName = data;
+  let stock = null;
+  socket.on('setStockName', (data) => {
+    stock = data;
     console.log(`New Stock : ${stock}`);
   });
 
@@ -23,12 +23,12 @@ io.on('connect', function (socket) {
         console.log(`Error: No socket`);
       return;
       }
-      if(!stockName){
+      if(!stock){
         socket.emit('notFound');
         console.log(`Error: Could not find stock name`);
         return;
       }
-      alphavantage.crypto.intraday('BTC').then((data) => {
+      alphavantage.data.intraday('FB').then((data) => {
       if(!data){
         socket.emit('notFound');
         console.log(`Error: Stock not found`);
@@ -37,8 +37,8 @@ io.on('connect', function (socket) {
       let mostRecentStock = Object.keys(data['Time Series (1min)'])[0];
       const stockPrice = data['Time Series (1min)'][mostRecentStock]["1. open"];
       const stockData = {
-        lastUpdated : mostRecentStock,
-        price: stockPrice
+        mostRecentStock : mostRecentStock,
+        currentValue: stockPrice
       };
       socket.emit('postStockPrice', stockData);
   });
