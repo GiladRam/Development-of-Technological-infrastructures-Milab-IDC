@@ -1,64 +1,50 @@
-const express = require('express')
-const app = express()
-const fs = require('fs');
-const port = process.env.PORT || 8080;
-let http = require('http');
-let server = http.createServer(app); 
-let io = require('socket.io')(server);
-let mainClient = null;
+const alphavantage = require('alphavantage')({key: 'LW906MWVENK2Z6XN'});
+const PORT = process.env.PORT || 3000;
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
-app.get('/', (req, res) => res.send('Welcome!!! MOLO API'))
+server.listen(PORT, () => console.log(`listening in port ${PORT}`));
 
-app.get('/gettime', (req,res) => {
-	let date = new Date();	
-	let jsonCurrentTime = { currentTime: date.toJSON()};
-	res.send(jsonurCrentTime);
-})
-
-app.get('/getFile/:filename', (req,res) => {
-	let reqFileName = req.params.filename || "No filename"
-	let filePath = __dirname + "/" + reqFileName
-	if (fs.existsSync(filePath)) {
-    	fs.createReadStream(reqFileName).pipe(res);
-	}else{
-		res.send("Could not find file " + filePath);		
-	}	
-})
-
-io.on('connection', function(client) {  
-    console.log('Client connected...');
-    mainClient = client;
-    console.log(mainClient);
-
-    client.on('join', function(data) {
-        console.log(data);
-    });
-
+app.get('/', function (req, res) {
+  res.status(403).send('Forbidden');
 });
 
+io.on('connect', function (socket) {
+  let stock = null;
+  socket.on('sendStockName', (data) => {
+    stock = data;
+    console.log(`New Stock : ${stock}`);
+  });
 
-var options = {
-  url: 'http://52.214.115.168:9200',
-  path: '/pi-log*/_search',
-  method: 'POST',
-  headers: {
-      'Content-Type': 'application/json',
-  }
-};
+  let postStockPrice = setInterval(() => {
+    console.log(`Sending new stock price`);
+      if(!socket){
+        console.log(`Error: No socket`);
+      return;
+      }
+      if(!stock){
+        socket.emit('notFound');
+        console.log(`Error: No stock name`);
+        return;
+      }
+      alphavantage.data.intraday('FB').then((data) => {
+      if(!data){
+        socket.emit('notFound');
+        console.log(`Error: Stock not found`);
+        return;
+      }
+      let mostRecentStock = Object.keys(data['Time Series (1min)'])[0];
+      const stockPrice = data['Time Series (1min)'][mostRecentStock]["1. open"];
+      const stockData = {
+        lastUpdated : mostRecentStock,
+        price: stockPrice
+      };
+      socket.emit('postStockPrice', stockData);
+  });
+}, 15000);
 
-
-setInterval(function () { 
-	var req = http.request(options, function(res) {
-  		console.log('Status: ' + res.statusCode);
-  		console.log('Headers: ' + JSON.stringify(res.headers));
-  		res.setEncoding('utf8');
-  		res.on('data', function (body) {
-    	console.log('Body: ' + body);
-  			});
-		});  
-		req.on('error', function(e) {
-  			console.log('problem with request: ' + e.message);
-		});   
-}, 1000); 
-
-app.listen(port, () => console.log('Example app listening on port' + port + '!'))
+  socket.on('disconnect',() => {
+    clearInterval(postStockPrice);
+  });
+});
