@@ -1,4 +1,3 @@
-
 const MongoClient = require('mongodb').MongoClient;
 const mongoUrl = 'mongodb://giladram:giladram@ds259897.mlab.com:59897/exercise11';
 const express = require('express');
@@ -38,6 +37,7 @@ app.get('/song', urlParser, function(req, res){
 	}
 });
 
+
 app.post('/addSong', jsonBodyParser, function(req, res){
 	if (!req.body)
 	{
@@ -59,6 +59,7 @@ app.post('/addSong', jsonBodyParser, function(req, res){
 
 });
 
+
 app.put('/updateSong', jsonBodyParser, function(req, res){
 	if(!req.body)
 	{
@@ -79,6 +80,7 @@ app.put('/updateSong', jsonBodyParser, function(req, res){
 		 
 	}
 });
+
 
 app.delete('/delete', jsonBodyParser, function(req, res){
 	if(!req.body)
@@ -120,6 +122,7 @@ function connectToMongoDB(){
 	});
 }
 
+
 function addSong(song, res) {
   db.collection('songsCollection').insert([song], function(err, database) {
         if (err){
@@ -130,6 +133,7 @@ function addSong(song, res) {
         } 
     });
 }
+
 
 function readSongs(propertie ,param, res){
 	let dbQuery = {}
@@ -146,6 +150,7 @@ function readSongs(propertie ,param, res){
 		}
 	})
 }
+
 
 function updateSong(id, update, res){
 	let updateQuery = {"_id": ObjectId(id)}
@@ -176,10 +181,19 @@ function deleteSong(id, res){
 			}
 			else
 			{
-				res.send("Song was deleted")
+				let numberOfDeletedRecoreds = result.result.n
+				if (numberOfDeletedRecoreds == 0)
+				{
+					res.send("Song not found!")	
+				}
+				else
+				{
+					res.send("Song was deleted")
+				}
 			}
 		})
 }
+
 
 // Song delete schema
 let deleteSongSchema = {
@@ -190,9 +204,6 @@ let deleteSongSchema = {
 	},
 	"required": ["id"]
 }
-
-
-
 
 
 // Song addition schema
@@ -207,6 +218,7 @@ let addSongSchema = {
     },
     "required": ["name", "artist", "genre"]
   };
+
 
 // Song update schema
 let updateSongSchema = {
