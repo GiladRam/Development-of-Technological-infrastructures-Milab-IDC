@@ -60,7 +60,6 @@ app.post('/addSong', jsonBodyParser, function(req, res){
 });
 
 app.put('/updateSong', jsonBodyParser, function(req, res){
-	console.log(req.body)
 	if(!req.body)
 	{
 		return res.sendStatus(400)
@@ -68,7 +67,7 @@ app.put('/updateSong', jsonBodyParser, function(req, res){
 	else
 	{
 		let body = req.body
-		let inputValidation = jsonValidator.validate(body, updateSong)
+		let inputValidation = jsonValidator.validate({body: updateSongSchema}, [addSongSchema])
 		console.log(inputValidation)
 		if(inputValidation.valid){
 			let id = req.body.id
@@ -81,8 +80,23 @@ app.put('/updateSong', jsonBodyParser, function(req, res){
 	}
 });
 
-app.delete('/delete', function(req, res){
-
+app.delete('/delete', jsonBodyParser, function(req, res){
+	if(!req.body)
+	{
+		return res.sendStatus(400)
+	}
+	else
+	{
+		let body = req.body
+		let inputValidation = jsonValidator.validate(body, deleteSongSchema)
+		console.log(inputValidation)
+		if(inputValidation.valid){
+			let id = req.body.id
+			console.log('delete song id - %s', id)
+			deleteSong(id, res)	
+		}
+		 
+	}
 });
 
 app.listen(port, function() {
@@ -152,16 +166,33 @@ function updateSong(id, update, res){
 		})
 }
 
-// Song update schema
-let updateSongSchema = {
+
+function deleteSong(id, res){
+	deleteQuery = {"_id": ObjectId(id)}
+	db.collection("songsCollection").deleteOne(
+		deleteQuery, function(err, result){
+			if(err){
+				throw err
+			}
+			else
+			{
+				res.send("Song was deleted")
+			}
+		})
+}
+
+// Song delete schema
+let deleteSongSchema = {
 	"id": "/SongUpdate",
 	"type": "object",
 	"properties": {
 		"id": {"type": "string"},
-		"song": {"$ref": "/Song"}
 	},
-	"required": ["id", "song"]
+	"required": ["id"]
 }
+
+
+
 
 
 // Song addition schema
@@ -176,3 +207,14 @@ let addSongSchema = {
     },
     "required": ["name", "artist", "genre"]
   };
+
+// Song update schema
+let updateSongSchema = {
+	"id": "/SongUpdate",
+	"type": "object",
+	"properties": {
+		"id": {"type": "string"},
+		"song": {"$ref": "/Song"}
+	},
+	"required": ["id", "song"]
+}
