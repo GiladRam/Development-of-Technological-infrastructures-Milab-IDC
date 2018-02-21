@@ -1,11 +1,9 @@
-	       Exercise 10
+	       Exercise 11
 --------------------------------------------
-  1. I did this exersice with Tomer Maimon 
-  2. In my repo you can find the server side.
-  3. The Node JS server monitor stock qoutes from Alpha Vantage.
-  4. Tomer implemented an android client for it which allows to enter stock name
-     and  send the client information (stock price).
-  5. The server updates the clinet every every 15 seconds using Firebase.
-
-     Thanks a lot, 
+  1. In this exercise we practiced MongoDB using Mlab platform.
+  2. I used bodyparser for data input validation.
+  3. I implemented a simple node.js CRUD server for music songs. 
+     Each song has standard fields like song name, artist and genre.
+     
+      Thanks a lot, 
          Gilad Ram
