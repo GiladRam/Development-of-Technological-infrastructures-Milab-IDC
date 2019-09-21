@@ -55,3 +55,15 @@ freeline.py
 freeline/
 freeline_project_description.json
 
+# Linux
+.directory
+*~
+
+
+# npm
+node_modules
+package-lock.json
+*.log
+*.gz
+
+
